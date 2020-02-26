@@ -327,4 +327,28 @@ function play(guild, song) {
 	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 
     serverQueue.textChannel.send(`<:music:511059373989167114> **${song.title}** 틀어줄게!`);
+}
+
+
+client.on("message", async message => {
+    let messageArray = message.content.split(" ");
+    let args = messageArray.slice(1);
+    if(message.content.startsWith("감자야 신고")){
+        let rUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+        if(!rUser) return message.channel.send("사용법 : ~신고 @사람이름 ");
+        let reason = args.join(" ").slice(22);
+
+        let reportEmbed = new Discord.RichEmbed()
+            .setTitle("신고")
+            .setColor("#15f153")
+            .addField("신고받은 유저", `${rUser}`)
+            .addField("시각", message.createdAt)
+            .addField("사유", reason);
+            
+        let reportschannel = message.guild.channels.find(`name`, "🚨신고");
+        if(!reportschannel) return message.channel.send("본 서버에서는 아직 신고 기능을 사용할 수 없습니다. 조금만 기다려 주세요!");
+        reportschannel.send(reportEmbed);
+        message.channel.send(`${rUser} (을)를 [${reason}](이)라는 사유로 신고했습니다.`
+        );
     }
+});
