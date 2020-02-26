@@ -17,64 +17,60 @@
 
 ------------------------------------------------------------------------------------------------ 
 */
-const Discord = require('discord.js');
-const { Client, Util } = require('discord.js');
-const bot = new Discord.Client({disableEveryone: true});
-const ytdl = require("ytdl-core");
-const request = require("request");
-const fs = require("fs");
-const getYouTubeID = require("get-youtube-id");
-const fetchVideoInfo = require("youtube-info");
-const GOOGLE_API_KEY = "" //이 칸에 구글 API키를 작성하세요. Please insert your Google API Key here.
+const Discord = require("discord.js")
+const {Client, Util} = require('discord.js');
 const YouTube = require('simple-youtube-api');
-const superagent = require('superagent')
-const client = new Discord.Client();
-bot.login('') //이 칸에 봇의 토큰을 작성하세요. Please insert your Discord Bot's API Key here.
-var guilds = {};
+const ytdl = require('ytdl-core');
+const client = new Client({ disableEveryone: true });
+const GOOGLE_API_KEY = "" //NOT REVEILED
+const youtube = new YouTube(GOOGLE_API_KEY);
+const queue = new Map();
 
-bot.on('message', async message => {
-    let pr = message.content.replace('감자야 ', '')
-	let command = pr.split(' ')[0];
+client.login('');
+client.on('warn', console.warn);
+client.on('error', console.error);
+client.on('ready', () => {
+	console.log('감자봇 준비 완료!')
+	client.user.setActivity("감자봇 베타 제작중입니다. '감자야 도움'을 입력해 보세요!", {type: 1})
 });
+client.on('disconnect', () => console.log('감자봇 음악 연결이 해제되었습니다.'));
+client.on('reconnecting', () => console.log('감자봇 음악이 다시 연결되었습니다.'));
 
-bot.on("ready", async() => {
-    console.log(`작동 성공!!!`);
-    bot.user.setActivity("", {type: 0})
-});
 
-bot.on("message", async message => {
+client.on("message", async message => {
     if(message.channel.type === "dm") return;
     let messageArray = message.content.split(" ");
     let cmd = messageArray[0];
     let args = messageArray.slice(1);
-
-//도움말 Help--------------------------------------------------
-
-    if(message.content.startsWith("감자야 도움") || message.content.startsWith("감자도움")){
+        if(message.content.startsWith("감자야 도움" || "감자도움")){
         let help = new Discord.RichEmbed()
         .setTitle('**감자봇 도움말**')
-        .addField('')
+        .addField('감자를 부르는 방법: `감자야 {할 말}`')
+        .addField('감자봇에는 다음과 같은 기능들을 지원합니다!!')
+        .addField('**🗨 일반**\n 기본 챗봇의 기능을 볼 수 있습니다. `감자야 {할 말}`로 대화를 해 보세요!')
+        .addField('**🎵음악**\n 유튜브에서 제공한 음악 기능입니다. `감자야 도움 음악`으로 자세히...')
+        .addField('**🚨서버관리**\n서버 관리 기능입니다. `감자야 도움 관리`으로 자세히...')
+        .addField('제작자: potato179#8362 | 디스코드 서버: https://discord.gg/ecsApMn | 페이스북 페이지: https://facebook.com/106653707477261')
         .setColor('#d92be0')
         .setFooter('감자봇 - 도움말')
         message.channel.send(help) 
     }
 
-//기본 명령어 Common Commands--------------------------------------------------
-
-    if(message.content.startsWith("감자야 안녕") || message.content.startsWith("감자야 ㅎㅇ")){
-        var messagesend = Math.floor(Math.random() * 3);
+    if(message.content.startsWith("감자야 안녕") || message.content.startsWith("감자야 하이") || message.content.startsWith("감자야 ㅎㅇ") || message.content.startsWith("감자하")){
+        var messagesend = Math.floor(Math.random() * 4);
         if(messagesend === 0) message.channel.send("안반가운데");
         if(messagesend === 1) message.channel.send("누구세요?");
         if(messagesend === 2) message.channel.send("ㅎㅇㅎㅇ");
+        if(messagesend === 3) message.channel.send("또왔네..");
     }
 
-//뽑기 Random Dice--------------------------------------------------
+    if(message.content.startsWith("감자야 놀아줘")) message.channel.send("싫어");
 
-    if(message.content.startsWith("감자야 주사위") || message.content.startsWith("감자주")){
+    if(message.content.startsWith("감자야 주사위" || "감자주")) {
         var rand = Math.floor(Math.random() * 6) + 1;        
         message.channel.send(":game_die: 주사위를 던졌습니다: " + rand);
     }
-    if(message.content.startsWith("감자야 카드")){
+    if(message.content.startsWith("감자야 카드")) {
         var randnum = Math.floor(Math.random() * 13);
         var randshape = Math.floor(Math.random() * 4);
         if(randnum === 0) var cardnum = ":regional_indicator_a:";
@@ -96,236 +92,239 @@ bot.on("message", async message => {
         if(randshape === 3) var cardshape = ":clubs:";
         message.channel.send(cardnum + cardshape);
     }
+    if(message.content.startsWith("감자야 도박")) {
+        var bet1 = Math.floor(Math.random() * 12);
+        var bet2 = Math.floor(Math.random() * 12);
+        var bet3 = Math.floor(Math.random() * 12);
+        if(bet1 === 0) betres1 = ":a:";
+        if(bet1 === 1) betres1 = ":b:";
+        if(bet1 === 2) betres1 = ":one:";
+        if(bet1 === 3) betres1 = ":two:";
+        if(bet1 === 4) betres1 = ":three:";
+        if(bet1 === 5) betres1 = ":four:";
+        if(bet1 === 6) betres1 = ":five:";
+        if(bet1 === 7) betres1 = ":six:";
+        if(bet1 === 8) betres1 = ":seven:";
+        if(bet1 === 9) betres1 = ":eight:";
+        if(bet1 === 10) betres1 = ":nine:";
+        if(bet1 === 11) betres1 = ":zero:";
+        if(bet2 === 0) betres2 = ":a:";
+        if(bet2 === 1) betres2 = ":b:";
+        if(bet2 === 2) betres2 = ":one:";
+        if(bet2 === 3) betres2 = ":two:";
+        if(bet2 === 4) betres2 = ":three:";
+        if(bet2 === 5) betres2 = ":four:";
+        if(bet2 === 6) betres2 = ":five:";
+        if(bet2 === 7) betres2 = ":six:";
+        if(bet2 === 8) betres2 = ":seven:";
+        if(bet2 === 9) betres2 = ":eight:";
+        if(bet2 === 10) betres2 = ":nine:";
+        if(bet2 === 11) betres2 = ":zero:";
+        if(bet3 === 0) betres3 = ":a:";
+        if(bet3 === 1) betres3 = ":b:";
+        if(bet3 === 2) betres3 = ":one:";
+        if(bet3 === 3) betres3 = ":two:";
+        if(bet3 === 4) betres3 = ":three:";
+        if(bet3 === 5) betres3 = ":four:";
+        if(bet3 === 6) betres3 = ":five:";
+        if(bet3 === 7) betres3 = ":six:";
+        if(bet3 === 8) betres3 = ":seven:";
+        if(bet3 === 9) betres3 = ":eight:";
+        if(bet3 === 10) betres3 = ":nine:";
+        if(bet3 === 11) betres3 = ":zero:";
+        if(bet1 === bet2 || bet1 === bet3 || bet2 === bet3){
+            message.channel.send("**:1234: 도박 결과** \n\n" + betres1 + betres2 + betres3 + "\n\n<:okay:511059374043561994> 완벽하진 않지만 도박에 성공했어! 기능 테스트 중이라서 아직 보상은 없어 \n```과도한 도박은 중독을 일으킬 수 있습니다.```");
+        }
+        if(bet1 === bet2 && bet1 === bet2 && bet1 === bet3){
+            message.channel.send("**:1234: 도박 결과** \n\n" + betres1 + betres2 + betres3 + "\n\n:thumbsup: 완벽하게 도박에 성공했어! 기능 테스트 중이라서 아직 보상은 없어 \n```과도한 도박은 중독을 일으킬 수 있습니다.```");
+        }
+        if(bet1 !== bet2 && bet2 !== bet3 && bet1 !== bet3){
+            message.channel.send("**:1234: 도박 결과** \n\n" + betres1 + betres2 + betres3 + "\n\n<:no:511056028364832779> 도박 실패... 다음 기회에... \n```과도한 도박은 중독을 일으킬 수 있습니다.```");
+        }
+    }
 }); 
 
-//음악봇 Music Bot--------------------------------------------------
 
-bot.on("message", async message => {
-    const queue = new Map();
-    const youtube = new YouTube(GOOGLE_API_KEY);
-    const args = message.content.split(' ');
-	const searchString = args.slice(2).join(' ');
-	const url = args[2] ? args[2].replace(/<(.+)>/g, '$1') : '';
+client.on("message", async message => {
+	if (!message.content.startsWith('감자')) return undefined;
+
+	const args = message.content.split(' ');
+	const searchString = args.slice(1).join(' ');
+	const url = args[1] ? args[1].replace(/<(.+)>/g, '$1') : '';
 	const serverQueue = queue.get(message.guild.id);
-    const searchString2 = args.slice(1).join(' ');
-	const url2 = args[1] ? args[1].replace(/<(.+)>/g, '$1') : '';
 
-	if(message.content.startsWith("감자야 플레이")) {
+	if (message.content.startsWith('감자플') || message.content.startsWith('감자야 플레이') || message.content.startsWith('감자야 틀어줘')) {
 		const voiceChannel = message.member.voiceChannel;
-		if(!voiceChannel) return message.channel.send(":no: ${message.author.username} 이 음성채널에 없어... 음성채널에 입장한 후 다시 불러봐!");
-		const permissions = voiceChannel.permissionsFor(message.client.user);mhnyunh
-		if(!permissions.has('CONNECT')) return message.channel.send(":no: 그곳에 입장할 권한이 없어... 관리자께 문의해봐!");
-		if(!permissions.has('SPEAK')) return message.channel.send(":no: 그곳서 말하기 권한이 없어... 관리자께 문의해봐!");
-		if(url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)){
+		if (!voiceChannel) return message.channel.send('음성 채널에 입장한 후 다시 시도해봐!');
+		const permissions = voiceChannel.permissionsFor(message.client.user);
+		if (!permissions.has('CONNECT')) return message.channel.send(':mute: 음성 채널에 입장할 권한이 없어. 다른 채널에서 시도하거나 서버 관리자에게 문의해봐!');
+		if (!permissions.has('SPEAK')) return message.channel.send(':mute: 그곳에서 말할 권한이 없어. 다른 채널에서 시도하거나 서버 관리자에게 문의해봐!');
+
+		if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
 			const playlist = await youtube.getPlaylist(url);
 			const videos = await playlist.getVideos();
-			for (const video of Object.values(videos)){
+			for (const video of Object.values(videos)) {
 				const video2 = await youtube.getVideoByID(video.id);
 				await handleVideo(video2, message, voiceChannel, true);
 			}
-            ytdl.getBasicInfo(playlist.url, (err1, info) => {
-                let vedl = `${info.length_seconds / 60}`
-                vedl = vedl.split('.')
-                vedl = `${vedl[0]}` + `:` + `${info.length_seconds % 60}`
-                return message.channel.send(`:okay: **${playlist.title}**( ${vedl} )를 재생목록에 추가했어!`);
-            });
-        } 
-            else {
-                try{
-                    var video = await youtube.getVideo(url);
-                } 
-                catch(err){
-                    try{
-                        var videos = await youtube.searchVideos(searchString, 5);
-                        let index = 0;
-                        message.channel.send(`
-                            __**검색결과:**__
-                            ${videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n')}
-                            1~5중 원하는 결과를 10초 이내로 번호로 입력해줘.
-                        `).then((th) => th.delete(10000));
-                        try{
-                            var response = await message.channel.awaitMessages(message2 => message2.content > 0 && message2.content < 11, {
-                                maxMatches: 1,
-                                time: 10000,
-                                errors: ['time']
-                            });
-                        } 
-                        catch(err){
-                            console.error(err);
-                            return message.channel.send(":alarm_clock: 시간이 초과됐어. 다시 시도해 줘.");
-                        }
-                        const videoIndex = parseInt(response.first().content);
-                        var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
-                    } 
-                    catch (err){
-                        console.error(err);
-                        return message.channel.send('');
-                    }
-                }
-                return handleVideo(video, message, voiceChannel);
-            }
-        }
-        if(message.content.startsWith("감자야 스킵")){
-            if(!message.member.voiceChannel) return message.channel.send(":no: 스킵할 노래가 없어!");
-            if(!serverQueue) return message.channel.send(":no: 스킵할 노래가 없어!");
-            serverQueue.connection.dispatcher.end("쳇...");
-            message.channel.send(":next: 스킵했어!");
-            return undefined;
-        } 
-        if(message.content.startsWith("감자야 정지")){
-            if(!message.member.voiceChannel) return message.channel.send(":no: 정지할 노래가 없어!");
-            if(!serverQueue) return message.channel.send(":no: 정지할 노래가 없어!");
-            serverQueue.songs = [];
-            serverQueue.connection.dispatcher.end('쳇...');
-            message.channel.send(":clean: 재생목록을 초기화했어!");
-            return undefined;
-        }
-        if(message.content.startsWith("감자야 볼륨")){
-            if(!message.member.voiceChannel) return message.channel.send(":no: 볼륨을 조정할 노래가 없어!");
-            if(!serverQueue) return message.channel.send(":no: 볼륨을 조정할 노래가 없어!");
-            if(!args[2]) return message.channel.send(`현재 볼륨: **${serverQueue.volume * 100}**`);
-            let vollum = parseInt(args[2]) / 100;
-            serverQueue.volume = vollum;
-            serverQueue.connection.dispatcher.setVolumeLogarithmic(args[2] / 100);
-            return message.channel.send(`:loud_sound: ${args[2]}%로 볼륨을 변경했어!`);
-        } 
-        if(message.content.startsWith("감자야 뭐해")){
-            if(!serverQueue) return message.channel.send("너랑 디코하는중");
-            ytdl.getBasicInfo(serverQueue.songs[0].url, (err1, info) => {
-                let vedl = `${info.length_seconds / 60}`
-                vedl = vedl.split('.')
-                vedl = `${vedl[0]}` + `:` + `${info.length_seconds % 60}`
-                return message.channel.send(`:music: 지금 \`${serverQueue.songs[0].title}** ( ${vedl} )\`을 부르고 있어!`);
-            });
-        } 
-        if(message.content.startsWith("감자야 재생목록")) {
-            if(!serverQueue) return message.channel.send(":no: 재생목록에 노래가 없어. `감자야 플레이 {곡명}`으로 노래를 틀어봐!");
-            return message.channel.send(`
-                __**재생목록:**__
-                ${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')}
-                :music: 핸재 재생곡: ${serverQueue.songs[0].title}
-            `);
-        } 
-        if(message.content.startsWith("감자야 일시정지")) {
-            if(serverQueue && serverQueue.playing){
-                serverQueue.playing = false;
-                serverQueue.connection.dispatcher.pause();
-                return message.channel.send(":pause_button: 노래를 일시정지했어. `감자야 다시`로 다시 재생할 수 있어!");
-            }
-            return message.channel.send(":no: 일시정지할 노래가 없어!");
-        } 
-        if(message.content.startsWith("감자야 다시")) {
-            if(serverQueue && !serverQueue.playing){
-                serverQueue.playing = true;
-                serverQueue.connection.dispatcher.resume();
-                return message.channel.send();
-            }
-            return message.channel.send(":no: 다시부를 노래가 없어!");
-        }
-        return undefined;
+			return message.channel.send(`<:okay:511059374043561994> **${playlist.title}**를 재생목록에 추가했어!`);
+		} else {
+			try {
+				var video = await youtube.getVideo(url);
+			} catch (error) {
+				try {
+					var videos = await youtube.searchVideos(searchString, 10);
+					let index = 0;
+					message.channel.send(`
+__**<검색결과>**__
+${videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n')}
+1~10 중 원하는 것을 10초 이내로 골라줘.
+					`);
+					// eslint-disable-next-line max-depth
+					try {
+						var response = await message.channel.awaitMessages(message2 => message2.content > 0 && message2.content < 11, {
+							maxMatches: 1,
+							time: 10000,
+							errors: ['time']
+						});
+					} catch (err) {
+						console.error(err);		
+						return message.channel.send(`:timer: 시간이 초과됐어. 다시 시도해줘.`);
+					}
+					const videoIndex = parseInt(response.first().content);
+					var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
+				} catch (err) {
+					console.error(err);	
+					return message.channel.send(`:thinking: 검색 결과가 없어. 다른 검색어로 시도해줘.`);
+				}
+			}
+			return handleVideo(video, message, voiceChannel);
+		}
+	}
+	 else if (message.content.startsWith('감자닥') || message.content.startsWith('감자야 다음') || message.content.startsWith('감자야 스킵')) {
+		if (!message.member.voiceChannel) return message.channel.send('https://media.discordapp.net/attachments/490326928037904394/563268376797904908/3.png');
+		if (!serverQueue) return message.channel.send('https://media.discordapp.net/attachments/490326928037904394/563268376797904908/3.png');		
+		serverQueue.connection.dispatcher.end(`<:next:511059373691502614> 다음곡 ㄱㄱ`);
+		return undefined;
+	} 
 
-    async function handleVideo(video, message, voiceChannel, playlist = false) {
-        const serverQueue = queue.get(message.guild.id);
-        console.log(video);
-        const song = {
-            id: video.id,
-            title: Util.escapeMarkdown(video.title),
-            url: `https://www.youtube.com/watch?v=${video.id}`
-        };
-        if(!serverQueue) {
-            const queueConstruct = {
-                textChannel: message.channel,
-                voiceChannel: voiceChannel,
-                connection: null,
-                songs: [],
-                volume: 0.5,
-                playing: true
-            };
-            queue.set(message.guild.id, queueConstruct);
-            queueConstruct.songs.push(song);
-            try{
-                var connection = await voiceChannel.join();
-                queueConstruct.connection = connection;
-                play(message.guild, queueConstruct.songs[0]);
-            } 
-            catch(error){
-                console.error(`************************************************************\n************************************************************\n채널에 들어갈수 없음: ${error}\n************************************************************\n************************************************************`);
-                queue.delete(message.guild.id);
-                return message.channel.send(`${error}(으)로 인해 채널에 들어갈 수 없어. 관리자에게 오류가 보고됐어!`);
-            }
-        } 
-        else{
-            serverQueue.songs.push(song);
-            console.log(serverQueue.songs);
-            if(playlist) return undefined;
-            else{
-                ytdl.getBasicInfo(song.url, (err1, info) => {
-                    let vedl = `${info.length_seconds / 60}`
-                    vedl = vedl.split('.')
-                    vedl = `${vedl[0]}` + `:` + `${info.length_seconds % 60}`
-                    return message.channel.send(`:okay: **${playlist.title}**( ${vedl} )를 재생목록에 추가했어!`);
-                });
-            }
-        }
-        return undefined;
-    }
+	else if (message.content.startsWith('감자정') || message.content.startsWith('감자야 꺼져') || message.content.startsWith('감자야 정지')) {
+		if (!message.member.voiceChannel) return message.channel.send('https://media.discordapp.net/attachments/490326928037904394/563268376797904908/3.png');
+		if (!serverQueue) return message.channel.send('https://media.discordapp.net/attachments/490326928037904394/563268376797904908/3.png');
+		serverQueue.songs = [];		
+		serverQueue.connection.dispatcher.end('<:leave:511059373540507649> 음악을 멈추고 재생목록을 비웠어. ㅂㅂ');
+		return undefined;
+	}
 
-    function play(guild, song){
-        const serverQueue = queue.get(guild.id);
-        if(!song){
-            serverQueue.voiceChannel.leave();
-            queue.delete(guild.id);
-            return;
-        }
-        console.log(serverQueue.songs);
-        const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
-        .on('end', reason => {
-            if(reason === 'Stream is not generating quickly enough.') console.log('노래가 강제로 중단되었습니다.');
-            else console.log(reason);
-            serverQueue.songs.shift();
-            play(guild, serverQueue.songs[0]);
-        })
-        .on('error', error => console.error(error));
-        dispatcher.setVolumeLogarithmic(serverQueue.volume);
-        ytdl.getBasicInfo(song.url, (err1, info) => {
-            let vedl = `${info.length_seconds / 60}`
-            vedl = vedl.split('.')
-            vedl = `${vedl[0]}` + `:` + `${info.length_seconds % 60}`
-            serverQueue.textChannel.send(`:okay: \`${song.title}\` (${vedl}) 들려줄게!`);
-        });
-    }
-});
+	else if (message.content.startsWith('감자볼') || message.content.startsWith('감자야 소리') || message.content.startsWith('감자야 볼륨')) {
+		if (!message.member.voiceChannel) return message.channel.send('https://media.discordapp.net/attachments/490326928037904394/563268376797904908/3.png');
+		if (!serverQueue) return message.channel.send('https://media.discordapp.net/attachments/490326928037904394/563268376797904908/3.png');
+		if (!args[1]) {
+			return message.channel.send(`:sound: 현재 볼륨: ${serverQueue.volume}`)
+		}
+		serverQueue.volume = args[1];
+		serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 5);
+		return message.channel.send(`:loud_sound: 볼륨을 ${args[1]}으로 설정했어!`)
+	} 
 
-//인사 Welcome--------------------------------------------------
+	else if (message.content.startsWith('감자뭐') || message.content.startsWith('감자야 지금') || message.content.startsWith('감자야 뭐해')) {
+		if (!serverQueue) return message.channel.send('너랑 채팅하는데');
+		return message.channel.send(`지금 ${serverQueue.songs[0].title}을(를) 부르고 있어!`)
+	} 
 
-bot.on('guildMemberAdd', member => {
-	let welcomechannel = member.guild.channels.find('name', '');
-    let memberavatar = member.user.avatarURL
-    if(!welcomechannel) return;
-        let welcomembed = new Discord.RichEmbed()
-        .setColor("#2E9AFE")
-        .setThumbnail(memberavatar)
-        .addField(":join: | 신입등장! ", `${member}`)
-        .addField("ID :", "**[" + `${member.id}` + "]**")
-		.addField("서버에 오신것을 환영합니다!", "반드시 서버의 규칙을 읽어주세요!")
-		.addField("시각", "가입날자 :")
-		.setTimestamp()
-        welcomechannel.sendEmbed(welcomembed);
-		return;
-});
+	else if (message.content.startsWith('감자큐') || message.content.startsWith('감자야 목록')) {
+		if (!serverQueue) return message.channel.send('https://media.discordapp.net/attachments/490326928037904394/563268376797904908/3.png');
+		let queue = new Discord.RichEmbed()
+			.setTitle('**<:note:511059373670400001> 재생목록**')
+			.addField(`${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')} \n**:music: 현재 재생곡** ${serverQueue.songs[0].title}`)
+			.setColor('#d92be0')
+			.setFooter('감자봇 - 음악')
+		return message.channel.send(queue)
+	} 
 
-bot.on('guildMemberRemove', member => {
-	let welcomechannel = member.guild.channels.find('name', '인사');
-    let memberavatar = member.user.avatarURL
-    if(!welcomechannel) return;
+	else if (message.content.startsWith('감자퍼') || message.content.startsWith('감자야 잠만') || message.content.startsWith('감자야 일시정지')) {
+		if (serverQueue && serverQueue.playing) {
+			serverQueue.playing = false;
+			serverQueue.connection.dispatcher.pause(`:pause_button: 음악을 일시정지했어! \`감자야 다시\`로 다시 틀 수 있어.`);
+		}
+		return message.channel.send('https://media.discordapp.net/attachments/490326928037904394/563268376797904908/3.png');
+	} 
 	
-        let byembed = new Discord.RichEmbed()
-        .setColor("#2E9AFE")
-        .setThumbnail(memberavatar)
-        .addField(":leave:  | 퇴장 ", `${member}`)
-        .addField("ID :", "**[" + `${member.id}` + "]**")
-		.addField("시각", "퇴장날자 :")
-		.setTimestamp()
-        welcomechannel.sendEmbed(byembed);
-        return;
+	else if (message.content.startsWith('감자리') || message.content.startsWith('감자야 다시') || message.content.startsWith('감자야 재생')) {
+		if (serverQueue && !serverQueue.playing) {
+			serverQueue.playing = true;
+			serverQueue.connection.dispatcher.resume();
+			return message.channel.send(`:play_pause: 음악을 다시 틀어줄게!`)
+		}
+		return message.channel.send('https://media.discordapp.net/attachments/490326928037904394/563268376797904908/3.png');
+	}
+
+	return undefined;
 });
+
+async function handleVideo(video, message, voiceChannel, playlist = false) {
+	const serverQueue = queue.get(message.guild.id);
+	console.log(video);
+	const song = {
+		id: video.id,
+		title: Util.escapeMarkdown(video.title),
+		url: `https://www.youtube.com/watch?v=${video.id}`
+	};
+	if (!serverQueue) {
+		const queueConstruct = {
+			textChannel: message.channel,
+			voiceChannel: voiceChannel,
+			connection: null,
+			songs: [],
+			volume: 5,
+			playing: true
+		};
+		queue.set(message.guild.id, queueConstruct);
+
+		queueConstruct.songs.push(song);
+
+		try {
+			var connection = await voiceChannel.join();
+			queueConstruct.connection = connection;
+			play(message.guild, queueConstruct.songs[0]);
+		} catch (error) {
+			console.error(`I could not join the voice channel: ${error}`);
+			queue.delete(message.guild.id);
+			let time = new Discord.RichEmbed()
+				.setTitle('**<:warn:511059374073053184> ERROR!**')
+				.addField(`${error}(으)로 인해 음악을 재생할 수 없어. 제작자에게 보고됐어.`)
+				.setColor('#d92be0')
+				.setFooter('감자봇 - 음악')			
+			return message.channel.send(time);
+		}
+	} else {
+		serverQueue.songs.push(song);
+		console.log(serverQueue.songs);
+		if (playlist) return undefined;
+		else return message.channel.send(`<:okay:511059374043561994> **${song.title}** 을 재생목록에 추가했어.`);
+	}
+	return undefined;
+}
+
+function play(guild, song) {
+	const serverQueue = queue.get(guild.id);
+
+	if (!song) {
+		serverQueue.voiceChannel.leave();
+		queue.delete(guild.id);
+		return;
+	}
+	console.log(serverQueue.songs);
+
+	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
+		.on('end', reason => {
+			if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
+			else console.log(reason);
+			serverQueue.songs.shift();
+			play(guild, serverQueue.songs[0]);
+		})
+		.on('error', error => console.error(error));
+	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+
+    serverQueue.textChannel.send(`<:music:511059373989167114> **${song.title}** 틀어줄게!`);
+    }
