@@ -45,17 +45,17 @@ client.on("message", async message => {
         if(message.content.startsWith("감자야 도움" || "감자도움")){
         let help = new Discord.RichEmbed()
         .setTitle('**감자봇 도움말**')
-        .addField('감자를 부르는 방법: `감자야 {할 말}`')
-        .addField('감자봇에는 다음과 같은 기능들을 지원합니다!!')
-        .addField('**🗨 일반**\n 기본 챗봇의 기능을 볼 수 있습니다. `감자야 {할 말}`로 대화를 해 보세요!')
-        .addField('**🎵음악**\n 유튜브에서 제공한 음악 기능입니다. `감자야 도움 음악`으로 자세히...')
-        .addField('**🚨서버관리**\n서버 관리 기능입니다. `감자야 도움 관리`으로 자세히...')
-        .addField('제작자: potato179#8362 | 디스코드 서버: https://discord.gg/ecsApMn | 페이스북 페이지: https://facebook.com/106653707477261')
+        .addField('감자를 부르는 방법" `감자야 {할 말}`', '감자봇에는 다음과 같은 기능들을 지원합니다!!')
+        .addField('`감자야 {할 말}`로 대화를 해 보세요!', '`감자야 안녕`, `감자야 놀아줘`, `감자야 감자는?` 등등...')
+        .addField('<:music:511059373989167114> 유튜브에서 음악을 틀어드립니다!', '`감자야 플레이(감자플) {검색어}`, `감자야 닥쳐(감자닥)`, `감자야 꺼져(감자정)`, `감자야 볼륨(감자볼)`, `감자야 뭐해?(감자뭐)`, `감자야 목록(감자큐)`, `감자야 일시정지(감자퍼)`, `감자야 다시(감자리)`')
+        .addField('<:user:511059279164342272> 직접 서버를 관리해 보세요!', '`감자야 신고 {유저언급} {사유}`, `감자야 경고(감자경) {유저언급} {사유}`, `감자야 추방(감자킥) {유저언급} {사유}`, `감자야 차단(감자벤) {유저언급} {사유}`')
+        .addField('<:magic:511059373729251331> 그 외 편리기능!', '`감자야 핑(감자핑)`, `감자야 도박`, `감자야 주사위`, `감자야 카드` 등등...')
+        .addField('문의', '제작자: potato179#8362 | 디스코드 서버: https://discord.gg/ecsApMn | 페이스북 페이지: https://facebook.com/106653707477261')
         .setColor('#d92be0')
         .setFooter('감자봇 - 도움말')
         message.channel.send(help) 
     }
-
+    
     if(message.content.startsWith("감자야 안녕") || message.content.startsWith("감자야 하이") || message.content.startsWith("감자야 ㅎㅇ") || message.content.startsWith("감자하")){
         var messagesend = Math.floor(Math.random() * 4);
         if(messagesend === 0) message.channel.send("안반가운데");
@@ -63,8 +63,35 @@ client.on("message", async message => {
         if(messagesend === 2) message.channel.send("ㅎㅇㅎㅇ");
         if(messagesend === 3) message.channel.send("또왔네..");
     }
+    if(message.content.startsWith("감자야 잘가") || message.content.startsWith("감자야 바이") || message.content.startsWith("감자야 ㅂㅇ") || message.content.startsWith("감자바")){
+        var messagesend = Math.floor(Math.random() * 2);
+        if(messagesend === 0) message.channel.send("그레\n다시오지마");
+        if(messagesend === 1) message.channel.send("ㅇㅇ ㅂㅂ");
+    }
 
+    if(message.content.startsWith("감자야 나가") || message.content.startsWith("감자야 꺼져")) message.channel.send("https://media.discordapp.net/attachments/490326928037904394/563268376797904908/3.png")
+    if(message.content.startsWith("감자야 감자는?")) message.channel.send("위대하다.");
+    if(message.content.startsWith("감자야 감자봇은?")) message.channel.send("위대하다.");
+    if(message.content.startsWith("감자야 PMH는?") || message.content.startsWith("감자야 pmh는?")) message.channel.send("행신중을 \"먹는거\"라고 주장한 사람");
+    if(message.content.startsWith("감자야 직각은?")) message.channel.send("_**쁘뤄그**_");
+    if(message.content.startsWith("감자야 오아시스는?")) message.channel.send("```오아시스는 안위대합니다. 아니라고요? 어쩌라고요?```");
+    if(message.content.startsWith("감자야 숙제해줘")) message.channel.send("워터봇한테 시키샘");
+    if(message.content.startsWith("감자야 워터봇은?")) message.channel.send("Zzz... Zzz...");
+    if(message.content.startsWith("감자야 뮤봇은?")) message.channel.send("사행성 봇");
+    if(message.content.startsWith("감자야 노트봇은?")) message.channel.send(":notes:");
+    if(message.content.startsWith("감자야 말넘심") || message.content.startsWith("감자야 그건좀")) message.channel.send("미안해...");
     if(message.content.startsWith("감자야 놀아줘")) message.channel.send("싫어");
+    if(message.content.startsWith("감자야 심심해")) message.channel.send("같이 코딩하실?");
+    if(message.content.startsWith("감자야 배그하자")) message.channel.send("어떡해 배그 계정이 없네");
+    if(message.content.startsWith("감자야 옵치하자")) message.channel.send("어떡해 옵치 계정이 없네");
+    if(message.content.startsWith("감자야 롤하자")) message.channel.send("어떡해 롤 정지당했네");
+    if(message.content.startsWith("감자야 코딩하자")) message.channel.send("너랑은 급이 달라서 하기싫음");
+    if(message.content.startsWith("감자야 해킹하자")) message.channel.send("너랑은 급이 달라서 안할거임 ㅅㄱ");
+    if(message.content.startsWith("감자야 죽어")) message.channel.send("대한민국 형법 제250조 \n```① 사람을 살해한 자는 사형, 무기 또는 5년 이상의 징역에 처한다. ② 자기 또는 배우자의 직계존속을 살해한 자는 사형, 무기 또는 7년 이상의 징역에 처한다.```");
+    if(message.content.startsWith("감자야 이상형")) message.channel.send("3상형");
+    if(message.content.startsWith("감자야 사랑해") || message.content.startsWith("감자야 사귀자") || message.content.startsWith("감자야 결혼하자")) message.channel.send("난 너 싫어하고 난 사람도 아님 ㅅㄱ");
+    if(message.content.startsWith("감자야 감져") || message.content.startsWith("감자야 고구마")) message.channel.send("감자가 더 맛있는데");
+    if(message.content.startsWith("감자야 돈줘") || message.content.startsWith("감자야 돈내놔")) message.channel.send("돈이 없어요...");
 
     if(message.content.startsWith("감자야 주사위" || "감자주")) {
         var rand = Math.floor(Math.random() * 6) + 1;        
@@ -142,6 +169,10 @@ client.on("message", async message => {
             message.channel.send("**:1234: 도박 결과** \n\n" + betres1 + betres2 + betres3 + "\n\n<:no:511056028364832779> 도박 실패... 다음 기회에... \n```과도한 도박은 중독을 일으킬 수 있습니다.```");
         }
     }
+
+    if(message.content.startsWith("감자야 핑") || message.content.startsWith("감자핑")) {
+        message.channel.send(client.ping + ' ms')
+    }
 }); 
 
 
@@ -180,7 +211,6 @@ __**<검색결과>**__
 ${videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n')}
 1~10 중 원하는 것을 10초 이내로 골라줘.
 					`);
-					// eslint-disable-next-line max-depth
 					try {
 						var response = await message.channel.awaitMessages(message2 => message2.content > 0 && message2.content < 11, {
 							maxMatches: 1,
@@ -236,7 +266,8 @@ ${videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n')}
 		if (!serverQueue) return message.channel.send('https://media.discordapp.net/attachments/490326928037904394/563268376797904908/3.png');
 		let queue = new Discord.RichEmbed()
 			.setTitle('**<:note:511059373670400001> 재생목록**')
-			.addField(`${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')} \n**:music: 현재 재생곡** ${serverQueue.songs[0].title}`)
+            .addField(`재생 목록`, `${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')}`)
+            .addField(`현재 재생곡`, `${serverQueue.songs[0].title}`)
 			.setColor('#d92be0')
 			.setFooter('감자봇 - 음악')
 		return message.channel.send(queue)
@@ -327,17 +358,15 @@ function play(guild, song) {
 	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 
     serverQueue.textChannel.send(`<:music:511059373989167114> **${song.title}** 틀어줄게!`);
-}
-
+    }
 
 client.on("message", async message => {
     let messageArray = message.content.split(" ");
     let args = messageArray.slice(1);
     if(message.content.startsWith("감자야 신고")){
         let rUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-        if(!rUser) return message.channel.send("사용법 : ~신고 @사람이름 ");
+        if(!rUser) return message.channel.send("사용법 : ");
         let reason = args.join(" ").slice(22);
-
         let reportEmbed = new Discord.RichEmbed()
             .setTitle("신고")
             .setColor("#15f153")
