@@ -63,37 +63,8 @@ client.on("message", async message => {
         if(messagesend === 2) message.channel.send("ㅎㅇㅎㅇ");
         if(messagesend === 3) message.channel.send("또왔네..");
     }
-    if(message.content.startsWith("감자야 잘가") || message.content.startsWith("감자야 바이") || message.content.startsWith("감자야 ㅂㅇ") || message.content.startsWith("감자바")){
-        var messagesend = Math.floor(Math.random() * 2);
-        if(messagesend === 0) message.channel.send("그레\n다시오지마");
-        if(messagesend === 1) message.channel.send("ㅇㅇ ㅂㅂ");
-    }
 
-    if(message.content.startsWith("감자야 나가") || message.content.startsWith("감자야 꺼져")) message.channel.send("https://media.discordapp.net/attachments/490326928037904394/563268376797904908/3.png")
-    if(message.content.startsWith("감자야 감자는?")) message.channel.send("위대하다.");
-    if(message.content.startsWith("감자야 감자봇은?")) message.channel.send("위대하다.");
-    if(message.content.startsWith("감자야 PMH는?") || message.content.startsWith("감자야 pmh는?")) message.channel.send("행신중을 \"먹는거\"라고 주장한 사람");
-    if(message.content.startsWith("감자야 직각은?")) message.channel.send("_**쁘뤄그**_");
-    if(message.content.startsWith("감자야 오아시스는?")) message.channel.send("```오아시스는 안위대합니다. 아니라고요? 어쩌라고요?```");
-    if(message.content.startsWith("감자야 숙제해줘")) message.channel.send("워터봇한테 시키샘");
-    if(message.content.startsWith("감자야 워터봇은?")) message.channel.send("Zzz... Zzz...");
-    if(message.content.startsWith("감자야 뮤봇은?")) message.channel.send("사행성 봇");
-    if(message.content.startsWith("감자야 노트봇은?")) message.channel.send(":notes:");
-    if(message.content.startsWith("감자야 말넘심") || message.content.startsWith("감자야 그건좀")) message.channel.send("미안해...");
-    if(message.content.startsWith("감자야 놀아줘")) message.channel.send("싫어");
-    if(message.content.startsWith("감자야 심심해")) message.channel.send("같이 코딩하실?");
-    if(message.content.startsWith("감자야 배그하자")) message.channel.send("어떡해 배그 계정이 없네");
-    if(message.content.startsWith("감자야 옵치하자")) message.channel.send("어떡해 옵치 계정이 없네");
-    if(message.content.startsWith("감자야 롤하자")) message.channel.send("어떡해 롤 정지당했네");
-    if(message.content.startsWith("감자야 코딩하자")) message.channel.send("너랑은 급이 달라서 하기싫음");
-    if(message.content.startsWith("감자야 해킹하자")) message.channel.send("너랑은 급이 달라서 안할거임 ㅅㄱ");
-    if(message.content.startsWith("감자야 죽어")) message.channel.send("대한민국 형법 제250조 \n```① 사람을 살해한 자는 사형, 무기 또는 5년 이상의 징역에 처한다. ② 자기 또는 배우자의 직계존속을 살해한 자는 사형, 무기 또는 7년 이상의 징역에 처한다.```");
-    if(message.content.startsWith("감자야 이상형")) message.channel.send("3상형");
-    if(message.content.startsWith("감자야 사랑해") || message.content.startsWith("감자야 사귀자") || message.content.startsWith("감자야 결혼하자")) message.channel.send("난 너 싫어하고 난 사람도 아님 ㅅㄱ");
-    if(message.content.startsWith("감자야 감져") || message.content.startsWith("감자야 고구마")) message.channel.send("감자가 더 맛있는데");
-    if(message.content.startsWith("감자야 돈줘") || message.content.startsWith("감자야 돈내놔")) message.channel.send("돈이 없어요...");
-
-    if(message.content.startsWith("감자야 주사위" || "감자주")) {
+    if(message.content.startsWith("감자야 주사위")) {
         var rand = Math.floor(Math.random() * 6) + 1;        
         message.channel.send(":game_die: 주사위를 던졌습니다: " + rand);
     }
