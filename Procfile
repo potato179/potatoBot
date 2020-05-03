@@ -1,0 +1,1 @@
+worker: node core.js
