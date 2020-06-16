@@ -12,7 +12,7 @@ exports.run = async ($감자봇, $메시지, pars) => {
         return $메시지.channel.send(`<:no:511056028364832779> <@${$메시지.author.id}>님은 차단할 권한을 갖지 않고 있습니다.`); 
     }
     if ($차단할인간.hasPermission("BAN_MEMBERS")) { 
-        return $메시지.channel.send("<:no:511056028364832779> 제가 그분을 차단할 권리를 갖고 있지 않네요..."); 
+        return $메시지.channel.send("<:no:511056028364832779> 제가 그분을 차단할 권한을 갖고 있지 않네요..."); 
     }
 
     let $차단할인간의와꾸 = $메시지.guild.iconURL;

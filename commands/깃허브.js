@@ -9,7 +9,7 @@ exports.run = async ($감자봇, $메시지, $쪼개) => {
 		max: 1,
 		time: 60000
     }).then((collected) => {
-        let $입력 = collected.first().content;
+        let $입력 = $메시지.content.toString();
         collected.delete();
 		if ($입력 === "취소") { 
             $메시지.channel.send("<:no:511056028364832779> 취소됨");
